@@ -1,0 +1,10 @@
+COLOQUE SUAS IMAGENS NESTA PASTA.
+
+Nomes reconhecidos pelo jogo:
+- carro.png
+- adversario.png
+- pista.png
+- fundo.png
+- trofeu.png
+
+As imagens são opcionais. Sem elas, o jogo desenha os elementos automaticamente.
