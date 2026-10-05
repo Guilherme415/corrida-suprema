@@ -1,6 +1,7 @@
+
 import pygame
 from scripts.config import (
-    LARGURA, ALTURA, FPS, CORES_CARRO, NOMES_CORES
+    LARGURA, ALTURA, FPS
 )
 from scripts.interfaces import Texto, Botao
 from scripts.fase import Fase
@@ -17,9 +18,17 @@ F_GRANDE = pygame.font.Font(None, 50)
 F_MEDIA = pygame.font.Font(None, 34)
 F_PEQUENA = pygame.font.Font(None, 25)
 
+VEICULOS = [
+    "Carro",
+    "Moto",
+    "Caminhão",
+    "Bicicleta",
+    "Ônibus"
+]
+
 estado = "menu"
 nome = ""
-cor_i = 0
+veiculo_i = 0
 
 fase_num = 1
 pontuacao = 0
@@ -44,7 +53,7 @@ def menu():
     )
 
     Texto(
-        "Escolha a cor do seu carro",
+        "Escolha o seu veículo",
         F_MEDIA
     ).desenhar(
         tela,
@@ -52,38 +61,60 @@ def menu():
         True
     )
 
-    for i, cor in enumerate(NOMES_CORES):
+    for i, veiculo in enumerate(VEICULOS):
 
         rect = pygame.Rect(
-            330 + i * 70,
-            190,
-            50,
-            50
+            170 + i * 165,
+            195,
+            140,
+            70
+        )
+
+        cor = (
+            (70, 70, 85)
+            if i != veiculo_i
+            else (90, 100, 130)
         )
 
         pygame.draw.rect(
             tela,
-            CORES_CARRO[cor],
+            cor,
             rect,
-            border_radius=10
+            border_radius=12
         )
 
-        if i == cor_i:
+        pygame.draw.rect(
+            tela,
+            (230, 230, 230),
+            rect,
+            3 if i == veiculo_i else 2,
+            border_radius=12
+        )
 
-            pygame.draw.rect(
-                tela,
-                (255, 255, 255),
-                rect,
-                4,
-                border_radius=10
-            )
+        Texto(
+            veiculo,
+            F_PEQUENA
+        ).desenhar(
+            tela,
+            rect.center,
+            True
+        )
+
+    Texto(
+        "Veículo escolhido: " + VEICULOS[veiculo_i],
+        F_MEDIA
+    ).desenhar(
+        tela,
+        (500, 300),
+        True
+    )
 
     Texto(
         "Nome: " + (nome or "Jogador"),
         F_MEDIA
     ).desenhar(
         tela,
-        (500, 285),
+        (500, 350),
         True
     )
 
@@ -93,19 +124,19 @@ def menu():
         (180, 180, 190)
     ).desenhar(
         tela,
-        (500, 320),
+        (500, 385),
         True
     )
 
     b_jogar = Botao(
         "COMEÇAR",
-        (350, 365, 300, 60),
+        (350, 420, 300, 60),
         F_MEDIA
     )
 
     b_rank = Botao(
         "RANKING",
-        (350, 445, 300, 60),
+        (350, 495, 300, 60),
         F_MEDIA
     )
 
@@ -118,7 +149,7 @@ def menu():
         (190, 190, 200)
     ).desenhar(
         tela,
-        (500, 560),
+        (500, 590),
         True
     )
 
@@ -130,7 +161,7 @@ def iniciar():
 
     fase = Fase(
         fase_num,
-        NOMES_CORES[cor_i],
+        VEICULOS[veiculo_i],
         tentativas
     )
 
@@ -381,7 +412,7 @@ def fim():
         enviado = salvar(
             nome or "Jogador",
             pontuacao,
-            NOMES_CORES[cor_i],
+            VEICULOS[veiculo_i],
             fases_vencidas
         )
 
@@ -429,14 +460,17 @@ def ranking():
 
     else:
 
-        for i, item in enumerate(dados[:10]):  
-                f"{i + 1}. " 
+        for i, item in enumerate(dados[:10]):
+
+            texto = (
+                f"{i + 1}. "
                 f"{item['nome']} — "
                 f"{item['pontuacao']} pts — "
-                f"{item['fases_vencidas']}/5 fases"   
-              
+                f"{item['fases_vencidas']}/5 fases"
+            )
 
-    Texto( 
+            Texto(
+                texto,
                 F_MEDIA
             ).desenhar(
                 tela,
@@ -530,22 +564,22 @@ while rodando:
             and evento.button == 1
         ):
 
-            for i, cor in enumerate(NOMES_CORES):
+            for i, veiculo in enumerate(VEICULOS):
 
                 r = pygame.Rect(
-                    330 + i * 70,
-                    190,
-                    50,
-                    50
+                    170 + i * 165,
+                    195,
+                    140,
+                    70
                 )
 
                 if r.collidepoint(evento.pos):
 
-                    cor_i = i
+                    veiculo_i = i
 
             if pygame.Rect(
                 350,
-                365,
+                420,
                 300,
                 60
             ).collidepoint(evento.pos):
@@ -563,7 +597,7 @@ while rodando:
 
             elif pygame.Rect(
                 350,
-                445,
+                495,
                 300,
                 60
             ).collidepoint(evento.pos):

@@ -8,3 +8,4 @@ Nomes reconhecidos pelo jogo:
 - trofeu.png
 
 As imagens são opcionais. Sem elas, o jogo desenha os elementos automaticamente.
+
