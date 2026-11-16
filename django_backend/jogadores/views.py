@@ -1,7 +1,10 @@
 import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .models import Jogador
 
+
+@csrf_exempt
 def salvar_pontuacao(request):
     if request.method != "POST":
         return JsonResponse({"erro": "Use POST"}, status=405)
@@ -18,9 +21,10 @@ def salvar_pontuacao(request):
     except Exception as erro:
         return JsonResponse({"ok": False, "erro": str(erro)}, status=400)
 
+
 def ranking(request):
     dados = list(
-        Jogador.objects.values(
+        Jogador.objects.order_by("-pontuacao", "-fases_vencidas").values(
             "nome", "pontuacao", "cor_carro", "fases_vencidas"
         )[:10]
     )

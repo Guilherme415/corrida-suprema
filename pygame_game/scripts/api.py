@@ -19,12 +19,14 @@ def salvar(nome, pontuacao, cor, fases):
         )
         with urllib.request.urlopen(req, timeout=2) as r:
             return r.status == 200
-    except Exception:
+    except Exception as e:
+        print("ERRO AO SALVAR:", e)
         return False
 
 def buscar_ranking():
     try:
         with urllib.request.urlopen(BASE + "/api/ranking/", timeout=2) as r:
             return json.loads(r.read().decode()).get("ranking", [])
-    except Exception:
+    except Exception as e:
+        print("ERRO AO BUSCAR RANKING:", e)
         return []

@@ -12,5 +12,5 @@ CORES_CARRO = {
 
 NOMES_CORES = list(CORES_CARRO.keys())
 
-# Velocidade do adversário em cada fase.
-VELOCIDADES_ADVERSARIO = [3.0, 3.7, 4.4, 5.2, 6.2]
+# Velocidade do adversário em cada fase (8 fases).
+VELOCIDADES_ADVERSARIO = [1.0, 2.3, 3.0, 4.0, 4.5, 4.9, 5.4, 6.2]

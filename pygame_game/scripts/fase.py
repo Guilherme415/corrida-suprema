@@ -1,4 +1,3 @@
-
 import pygame
 from .config import VELOCIDADES_ADVERSARIO
 from .carro import Carro
@@ -137,12 +136,16 @@ class Fase:
             2: 2000,
             3: 3000,
             4: 4000,
-            5: 5000
+            5: 5000,
+            6: 6000,
+            7: 7000,
+            8: 8000
         }
 
-        pontos_base = pontos_por_fase[
-            self.numero
-        ]
+        pontos_base = pontos_por_fase.get(
+            self.numero,
+            self.numero * 1000
+        )
 
         if self.tentativas == 1:
             multiplicador = 1.0
@@ -159,4 +162,3 @@ class Fase:
         return int(
             pontos_base * multiplicador
         )
-

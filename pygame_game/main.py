@@ -1,4 +1,3 @@
-
 import pygame
 from scripts.config import (
     LARGURA, ALTURA, FPS
@@ -9,8 +8,10 @@ from scripts.api import salvar, buscar_ranking
 
 pygame.init()
 
+TOTAL_FASES = 8
+
 tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption("🏎️ Corrida 5 Fases")
+pygame.display.set_caption(f"🏎️ Corrida {TOTAL_FASES} Fases")
 clock = pygame.time.Clock()
 
 F_TITULO = pygame.font.Font(None, 72)
@@ -44,7 +45,7 @@ def menu():
     tela.fill((20, 24, 38))
 
     Texto(
-        "CORRIDA 5 FASES",
+        f"CORRIDA {TOTAL_FASES} FASES",
         F_TITULO
     ).desenhar(
         tela,
@@ -191,7 +192,7 @@ def corrida():
     )
 
     Texto(
-        f"FASE {fase_num}/5",
+        f"FASE {fase_num}/{TOTAL_FASES}",
         F_MEDIA
     ).desenhar(
         tela,
@@ -286,7 +287,7 @@ def vitoria():
         True
     )
 
-    if fase_num < 5:
+    if fase_num < TOTAL_FASES:
 
         b = Botao(
             "PRÓXIMA FASE",
@@ -299,11 +300,11 @@ def vitoria():
     else:
 
         Texto(
-            "Você completou as 5 fases!",
+            f"Você completou as {TOTAL_FASES} fases!",
             F_MEDIA
         ).desenhar(
             tela,
-            (500, 370),
+            (500, 385),
             True
         )
 
@@ -325,7 +326,7 @@ def derrota():
         F_TITULO
     ).desenhar(
         tela,
-        (500, 150),
+        (500, 140),
         True
     )
 
@@ -334,34 +335,42 @@ def derrota():
         F_GRANDE
     ).desenhar(
         tela,
-        (500, 235),
+        (500, 220),
         True
     )
 
     Texto(
-        "O adversário chegou primeiro!",
+        f"O adversário chegou primeiro! (Pontos acumulados: {pontuacao})",
         F_MEDIA
     ).desenhar(
         tela,
-        (500, 300),
+        (500, 285),
         True
     )
 
     b = Botao(
         "TENTAR NOVAMENTE",
-        (350, 370, 300, 60),
+        (330, 350, 340, 60),
         F_MEDIA
     )
 
     b.desenhar(tela)
 
     b2 = Botao(
-        "VOLTAR AO MENU",
-        (350, 450, 300, 60),
+        "FINALIZAR E SALVAR",
+        (330, 425, 340, 60),
         F_MEDIA
     )
 
     b2.desenhar(tela)
+
+    b3 = Botao(
+        "VOLTAR AO MENU",
+        (330, 500, 340, 60),
+        F_MEDIA
+    )
+
+    b3.desenhar(tela)
 
 
 def fim():
@@ -389,7 +398,7 @@ def fim():
     )
 
     Texto(
-        f"Fases vencidas: {fases_vencidas}/5",
+        f"Fases vencidas: {fases_vencidas}/{TOTAL_FASES}",
         F_MEDIA
     ).desenhar(
         tela,
@@ -466,7 +475,7 @@ def ranking():
                 f"{i + 1}. "
                 f"{item['nome']} — "
                 f"{item['pontuacao']} pts — "
-                f"{item['fases_vencidas']}/5 fases"
+                f"{item['fases_vencidas']}/{TOTAL_FASES} fases"
             )
 
             Texto(
@@ -540,7 +549,7 @@ while rodando:
                 and evento.key == pygame.K_RETURN
             ):
 
-                if fase_num < 5:
+                if fase_num < TOTAL_FASES:
 
                     fase_num += 1
                     tentativas = 1
@@ -632,7 +641,7 @@ while rodando:
                 60
             ).collidepoint(evento.pos):
 
-                if fase_num < 5:
+                if fase_num < TOTAL_FASES:
 
                     fase_num += 1
                     tentativas = 1
@@ -643,7 +652,7 @@ while rodando:
                     estado = "fim"
 
             elif (
-                fase_num == 5
+                fase_num == TOTAL_FASES
                 and pygame.Rect(
                     350,
                     430,
@@ -661,9 +670,9 @@ while rodando:
         ):
 
             if pygame.Rect(
+                330,
                 350,
-                370,
-                300,
+                340,
                 60
             ).collidepoint(evento.pos):
 
@@ -671,9 +680,18 @@ while rodando:
                 iniciar()
 
             elif pygame.Rect(
-                350,
-                450,
-                300,
+                330,
+                425,
+                340,
+                60
+            ).collidepoint(evento.pos):
+
+                estado = "fim"
+
+            elif pygame.Rect(
+                330,
+                500,
+                340,
                 60
             ).collidepoint(evento.pos):
 
